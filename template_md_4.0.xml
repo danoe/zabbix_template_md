@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>4.4</version>
-    <date>2020-05-08T16:57:41Z</date>
+    <date>2020-06-17T18:13:20Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -9,9 +9,9 @@
     </groups>
     <templates>
         <template>
-            <template>Template MD Soft RAID</template>
-            <name>Template MD Soft RAID</name>
-            <description>Monitoring of MD Soft RAID</description>
+            <template>Template MD Software RAID</template>
+            <name>Template MD Software RAID</name>
+            <description>Monitoring of MD Software RAID</description>
             <groups>
                 <group>
                     <name>Templates</name>
@@ -26,7 +26,7 @@
                 <discovery_rule>
                     <name>MD Discovery</name>
                     <key>md.discover</key>
-                    <delay>2m</delay>
+                    <delay>1h</delay>
                     <filter>
                         <conditions>
                             <condition>
@@ -37,26 +37,6 @@
                         </conditions>
                     </filter>
                     <item_prototypes>
-                        <item_prototype>
-                            <name>MD $1 sync completed</name>
-                            <key>md.sync_completed[{#MDNAME}]</key>
-                            <delay>2m</delay>
-                            <value_type>FLOAT</value_type>
-                            <description>Get completion of RAID</description>
-                            <applications>
-                                <application>
-                                    <name>MD</name>
-                                </application>
-                            </applications>
-                            <trigger_prototypes>
-                                <trigger_prototype>
-                                    <expression>{last()}&lt;100</expression>
-                                    <name>MD {#MDNAME} is</name>
-                                    <opdata>{ITEM.LASTVALUE1}% completed</opdata>
-                                    <priority>DISASTER</priority>
-                                </trigger_prototype>
-                            </trigger_prototypes>
-                        </item_prototype>
                         <item_prototype>
                             <name>MD $1 degraded</name>
                             <key>md.degraded[{#MDNAME}]</key>
@@ -96,6 +76,47 @@
                             </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
+                            <name>MD $1 sync action</name>
+                            <key>md.sync_action[{#MDNAME}]</key>
+                            <delay>5m</delay>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <description>Get current sync action</description>
+                            <applications>
+                                <application>
+                                    <name>MD</name>
+                                </application>
+                            </applications>
+                            <request_method>POST</request_method>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{str(recover)}=1</expression>
+                                    <name>MD {#MDNAME} in recovery mode on {HOST.NAME}</name>
+                                    <priority>INFO</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>MD $1 sync completed</name>
+                            <key>md.sync_completed[{#MDNAME}]</key>
+                            <delay>2m</delay>
+                            <value_type>FLOAT</value_type>
+                            <description>Get completion of RAID</description>
+                            <applications>
+                                <application>
+                                    <name>MD</name>
+                                </application>
+                            </applications>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}&lt;100</expression>
+                                    <name>MD {#MDNAME} is</name>
+                                    <opdata>{ITEM.LASTVALUE1}% completed</opdata>
+                                    <priority>DISASTER</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
                             <name>MD $1 sync speed</name>
                             <key>md.sync_speed[{#MDNAME}]</key>
                             <delay>2m</delay>
@@ -121,28 +142,6 @@
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
-                        <item_prototype>
-                            <name>MD $1 sync action</name>
-                            <key>md.sync_action[{#MDNAME}]</key>
-                            <delay>5m</delay>
-                            <history>365d</history>
-                            <trends>0</trends>
-                            <value_type>TEXT</value_type>
-                            <description>Get current sync action</description>
-                            <applications>
-                                <application>
-                                    <name>MD</name>
-                                </application>
-                            </applications>
-                            <request_method>POST</request_method>
-                            <trigger_prototypes>
-                                <trigger_prototype>
-                                    <expression>{str(recover)}=1</expression>
-                                    <name>MD {#MDNAME} in recovery mode on {HOST.NAME}</name>
-                                    <priority>INFO</priority>
-                                </trigger_prototype>
-                            </trigger_prototypes>
-                        </item_prototype>
                     </item_prototypes>
                     <graph_prototypes>
                         <graph_prototype>
@@ -151,7 +150,7 @@
                                 <graph_item>
                                     <color>1A7C11</color>
                                     <item>
-                                        <host>Template MD Soft RAID</host>
+                                        <host>Template MD Software RAID</host>
                                         <key>md.degraded[{#MDNAME}]</key>
                                     </item>
                                 </graph_item>
@@ -159,7 +158,7 @@
                                     <sortorder>1</sortorder>
                                     <color>F63100</color>
                                     <item>
-                                        <host>Template MD Soft RAID</host>
+                                        <host>Template MD Software RAID</host>
                                         <key>md.sync_speed[{#MDNAME}]</key>
                                     </item>
                                 </graph_item>
@@ -167,7 +166,7 @@
                                     <sortorder>2</sortorder>
                                     <color>2774A4</color>
                                     <item>
-                                        <host>Template MD Soft RAID</host>
+                                        <host>Template MD Software RAID</host>
                                         <key>md.sync_completed[{#MDNAME}]</key>
                                     </item>
                                 </graph_item>
