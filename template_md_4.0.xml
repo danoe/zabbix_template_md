@@ -90,6 +90,11 @@
                             <request_method>POST</request_method>
                             <trigger_prototypes>
                                 <trigger_prototype>
+                                    <expression>{str(check)}=1</expression>
+                                    <name>MD {#MDNAME} in check mode on {HOST.NAME}</name>
+                                    <priority>INFO</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
                                     <expression>{str(recover)}=1</expression>
                                     <name>MD {#MDNAME} in recovery mode on {HOST.NAME}</name>
                                     <priority>INFO</priority>
